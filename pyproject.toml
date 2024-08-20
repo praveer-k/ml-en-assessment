@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "vanilla-steel"
+version = "0.1.0"
+description = "A tool to collate all resources into a single dataset"
+authors = ["praveer kumar <praveerkumar17@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [
+    { include = "vanilla_steel", from = "." },
+]
+
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pandas = "^2.2.2"
+requests = "^2.32.3"
+openpyxl = "^3.1.5"
+
+
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.29.5"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

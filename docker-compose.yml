@@ -1,0 +1,36 @@
+services:
+  ollama:
+      volumes:
+        - ./.local/ollama:/root/.ollama
+      container_name: vanilla-steel-ollama
+      pull_policy: always
+      tty: true
+      restart: unless-stopped
+      image: ollama/ollama:latest
+      ports:
+        - 11434:11434
+      environment:
+        - OLLAMA_KEEP_ALIVE=24h
+      networks:
+        - ollama-docker
+      deploy:
+        resources:
+          reservations:
+            devices:
+              - driver: nvidia
+                count: 1
+                capabilities: [gpu]
+  curl:
+    image: curlimages/curl:latest
+    container_name: vanilla-steel-curl
+    command: >
+      sh -c "curl -X POST http://ollama:11434/api/create 
+      -H 'Content-Type: application/json' 
+      -d '{\"name\": \"mistral:7b\", \"modelfile\": \"FROM mistral:7b\\nSYSTEM You are french to english translator\"}'"
+    depends_on:
+      - ollama
+    networks:
+        - ollama-docker
+networks:
+  ollama-docker:
+    external: false
