@@ -12,7 +12,7 @@ services:
       environment:
         - OLLAMA_KEEP_ALIVE=24h
       networks:
-        - ollama-docker
+        - dbnetwork
       deploy:
         resources:
           reservations:
@@ -26,11 +26,74 @@ services:
     command: >
       sh -c "curl -X POST http://ollama:11434/api/create 
       -H 'Content-Type: application/json' 
-      -d '{\"name\": \"mistral:7b\", \"modelfile\": \"FROM mistral:7b\\nSYSTEM You are french to english translator\"}'"
+      -d '{\"name\": \"mistral:7b\", \"modelfile\": \"FROM mistral:7b\\nSYSTEM You are a multi-lingual expert in the domain of steel manufacturing industry.\"}'"
     depends_on:
       - ollama
     networks:
-        - ollama-docker
+        - dbnetwork
+
+  postgres:
+    container_name: vanilla-steel-postgres
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${DB__USER}
+      POSTGRES_PASSWORD: ${DB__PASSWORD}
+      POSTGRES_DB: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB__USER} -d postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - dbnetwork
+    
+  postgres-create-database:
+    container_name: vanilla-steel-postgres-create-database
+    image: postgres:latest
+    env_file:
+      - .env
+    environment:
+      PGUSER: ${DB__USER}
+      PGPASSWORD: ${DB__PASSWORD}
+      PGHOST: ${DB__HOST}
+      PGDATABASE: postgres
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: > 
+      bash -c "
+        echo 'Creating database ${DB__NAME} if it does not exist...'
+        psql -c 'CREATE DATABASE ${DB__NAME} WITH OWNER ${DB__USER};'
+        echo 'Database creation completed.'
+        exit 0
+      "
+    networks:
+      - dbnetwork
+  
+  pgadmin:
+    container_name: vanilla-steel-pgadmin
+    image: dpage/pgadmin4:latest
+    environment:
+      PGHOST: ${DB__HOST}
+      PGADMIN_DEFAULT_EMAIL: ${DB__EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${DB__PASSWORD}
+    ports:
+      - "5000:80"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    networks:
+      - dbnetwork
+
+volumes:
+  postgres_data:
+  pgadmin_data:
+
 networks:
-  ollama-docker:
-    external: false
+  dbnetwork:
