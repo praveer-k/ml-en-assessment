@@ -36,11 +36,6 @@ sphinxcontrib-plantuml = "^0.30"
 furo = "^2024.8.6"
 
 
-[tool.poetry.scripts]
-docs = "vanilla_steel.__main__:show_docs"
-dashboard = "vanilla_steel.__main__:show_dashboard"
-
-
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

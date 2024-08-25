@@ -11,7 +11,7 @@ Hopefully you reached this documentation using the following the command:
    cd vanilla_steel
    poetry shell
    poetry install
-   poetry run docs --serve
+   python -m vanilla_steel --docs --serve
 
 Quick overview:
 
