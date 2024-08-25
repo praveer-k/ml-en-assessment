@@ -16,7 +16,7 @@ class InputSource3(TaskOrganizer):
    def restructure(self, sheet_name: str, df: pd.DataFrame) -> pd.DataFrame:
       # rename columns
       df.columns = [col.lower().strip().replace(" ","_") for col in df.columns]
-      df.rename(columns={"numéro_de": "material_id", "article": "material_name", "matériel_desc#": "properties", "unité": "weighing_unit", "libre": "weight_amount"}, inplace=True)
+      df.rename(columns={"numéro_de": "manufacturer_id", "article": "material_name", "matériel_desc#": "properties", "unité": "weighing_unit", "libre": "weight_amount"}, inplace=True)
       # parse dimensions from the excel sheets
       df["properties"] = df["properties"].str.replace('*', 'x')
       df["properties"] = df["properties"].str.replace(r'(\d)x', r'\1 x ', regex=True)
@@ -38,12 +38,12 @@ class InputSource3(TaskOrganizer):
       df["supplier"] = None
       df["reserved"] = None
       # cast material id as str
-      df["material_id"] = df["material_id"].where(df["material_id"].notna(), "").astype(str)
-      df["material_id"] = df["material_id"].where(df["material_id"]=="", None)
+      df["manufacturer_id"] = df["manufacturer_id"].where(df["manufacturer_id"].notna(), "").astype(str)
+      df["manufacturer_id"] = df["manufacturer_id"].where(df["manufacturer_id"]=="", None)
       df["material_name"] = df["material_name"].where(df["material_name"].notna(), "").astype(str)
       df["material_name"] = df["material_name"].where(df["material_name"]=="", None)
       # re-order columns
-      df = df.reindex(columns=['material_id', 'material_name', 'quantity', 'quantity_unit', 'price_per_unit', 'supplier', 'length', 'breadth', 'height', 'dimension_unit', 'weight_amount', 'weighing_unit', 'properties', 'description', 'choice', 'reserved'])
+      df = df.reindex(columns=['manufacturer_id', 'material_name', 'quantity', 'quantity_unit', 'price_per_unit', 'supplier', 'length', 'breadth', 'height', 'dimension_unit', 'weight_amount', 'weighing_unit', 'properties', 'description', 'choice', 'reserved'])
       # add additional columns
       df["file_path"] = self.source.replace('\\', '/')
       df["sheet_name"] = sheet_name.strip()

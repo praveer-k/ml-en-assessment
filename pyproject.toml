@@ -20,10 +20,26 @@ pydantic = "^2.8.2"
 pydantic-settings = "^2.4.0"
 psycopg2 = "^2.9.9"
 tqdm = "^4.66.5"
+watchdog = "^4.0.2"
+streamlit = "^1.37.1"
+altair = "^5.4.0"
 
 
 [tool.poetry.group.dev.dependencies]
 ipykernel = "^6.29.5"
+
+
+[tool.poetry.group.docs.dependencies]
+recommonmark = "^0.7.1"
+watchdog = "^4.0.2"
+sphinxcontrib-plantuml = "^0.30"
+furo = "^2024.8.6"
+
+
+[tool.poetry.scripts]
+docs = "vanilla_steel.__main__:show_docs"
+dashboard = "vanilla_steel.__main__:show_dashboard"
+
 
 [build-system]
 requires = ["poetry-core"]

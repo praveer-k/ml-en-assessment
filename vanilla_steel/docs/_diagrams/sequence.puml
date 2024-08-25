@@ -1,0 +1,23 @@
+@startuml Vanilla Steel Pipeline - Sequence Diagram
+!theme plain
+skinparam backgroundColor #F5F5F5
+
+title Vanilla Steel Pipeline - Sequence Diagram
+
+participant User
+participant Loader
+participant Categorizer
+participant Database
+participant Dashboard
+
+User -> Loader: Store data from local directory
+Loader -> Database: Store cleaned data
+
+User -> Categorizer: Categorize data
+Categorizer -> Database: Store LLM output
+
+User -> Dashboard: Show dashboard
+
+Dashboard -> Database: Read aggregated data
+
+@enduml

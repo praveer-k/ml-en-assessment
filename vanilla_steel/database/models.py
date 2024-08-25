@@ -24,10 +24,10 @@ class Weight:
 @dataclass
 class Material:
     # required fields
-    # 'material_id', 'material_name', 'quantity', 'quantity_unit', 'price_per_unit', 'supplier', 'length', 'breadth', 'height', 
+    # 'manufacturer_id', 'material_name', 'quantity', 'quantity_unit', 'price_per_unit', 'supplier', 'length', 'breadth', 'height', 
     # 'dimension_unit', 'weight', 'weighing_unit', 'properties', 'description', 'choice', 'reserved', 'file_path', 'sheet_name'
 
-    material_id: str | None = Field(default_factory=None)
+    manufacturer_id: str | None = Field(default_factory=None)
     material_name: str | None = Field(default_factory=None)
     quantity: float | None = Field(default_factory=None)
     quantity_unit: str | None = Field(default_factory=None)
@@ -55,3 +55,23 @@ class Material:
     file_path: str | None = Field(default_factory=None)
     sheet_name: str | None = Field(default_factory=None)
 
+@dataclass
+class MaterialProperties:
+    material_id: int
+    summary               : str   | None = Field(default_factory=None)
+    # properties
+    damaged               : bool  | None = Field(default_factory=None)
+    oiled                 : bool  | None = Field(default_factory=None)
+    annealed              : bool  | None = Field(default_factory=None)
+    pickled               : bool  | None = Field(default_factory=None)
+    ductile               : bool  | None = Field(default_factory=None)
+    surface               : str   | None = Field(default_factory=None)
+    # coating
+    zinc_coating          : bool  | None = Field(default_factory=None)
+    zinc_coating_strength : float | None = Field(default_factory=None)
+    # strength
+    yield_strength        : float | None = Field(default_factory=None)
+    tensile_strength      : float | None = Field(default_factory=None)
+    # grade of steel
+    automotive_grade      : bool  | None = Field(default_factory=None)
+    consumer_grade        : bool  | None = Field(default_factory=None)

@@ -68,17 +68,18 @@ class InputSource1(TaskOrganizer):
         # not defined
         df['length'] = None
         df["quantity"] = None
-        df["material_id"] = None
+        df["manufacturer_id"] = None
         df["total_price"] = None
         df["price_per_unit"] = None
         df["supplier"] = None
         df["reserved"] = None
         # cast material id as str
-        df["material_id"] = df["material_id"].astype(str)
+        df["manufacturer_id"] = df["manufacturer_id"].fillna("").astype(str)
+        df["manufacturer_id"] = df["manufacturer_id"].replace("", None)
         df["material_name"] = df["material_name"].fillna("").astype(str)
         df["material_name"] = df["material_name"].replace("", None)
         # re-order columns
-        df = df.reindex(columns=['material_id', 'material_name', 'quantity', 'quantity_unit', 'price_per_unit', 'supplier', 'length', 'breadth', 'height', 'dimension_unit', 'weight_amount', 'weighing_unit', 'properties', 'description', 'choice', 'reserved'])
+        df = df.reindex(columns=['manufacturer_id', 'material_name', 'quantity', 'quantity_unit', 'price_per_unit', 'supplier', 'length', 'breadth', 'height', 'dimension_unit', 'weight_amount', 'weighing_unit', 'properties', 'description', 'choice', 'reserved'])
         # extra information
         df["file_path"] = self.source
         df["sheet_name"] = sheet_name

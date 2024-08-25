@@ -39,7 +39,7 @@ class InputSource2(TaskOrganizer):
       df = pd.concat([df1, df2, df3])
       # rename columns
       df.columns = [col.lower().strip().replace(" ","_") for col in df.columns]
-      df.rename(columns={"article_id": "material_id", "material": "properties", "description": "other_description", "opmerking": "description", "weight": "weight_amount"}, inplace=True)
+      df.rename(columns={"article_id": "manufacturer_id", "material": "properties", "description": "other_description", "opmerking": "description", "weight": "weight_amount"}, inplace=True)
       # fill empty values
       df["description"] = df["description"].where(df["description"].notna(), None)
       # move values to properties from other description
@@ -67,12 +67,12 @@ class InputSource2(TaskOrganizer):
       df["supplier"] = None
       df["weighing_unit"] = None
       # cast material id as str
-      df["material_id"] = df["material_id"].where(df["material_id"].notna(), None)
+      df["manufacturer_id"] = df["manufacturer_id"].where(df["manufacturer_id"].notna(), None)
       df["material_name"] = df["material_name"].where(df["material_name"].notna(), None)
       df["reserved"] = df["reserved"].where(df["reserved"].notna(), None)
       df["quantity"] = df["quantity"].where(df["quantity"].notna(), None)
       # re-order columns
-      df = df.reindex(columns=['material_id', 'material_name', 'quantity', 'quantity_unit', 'price_per_unit', 'supplier', 'length', 'breadth', 'height', 'dimension_unit', 'weight_amount', 'weighing_unit', 'properties', 'description', 'choice', 'reserved'])
+      df = df.reindex(columns=['manufacturer_id', 'material_name', 'quantity', 'quantity_unit', 'price_per_unit', 'supplier', 'length', 'breadth', 'height', 'dimension_unit', 'weight_amount', 'weighing_unit', 'properties', 'description', 'choice', 'reserved'])
       # add additional columns
       df["file_path"] = self.source.replace('\\', '/')
       df["sheet_name"] = sheet_name.strip()
@@ -93,7 +93,7 @@ class InputSource2(TaskOrganizer):
       df.drop(index=[12, 15, 16, 27, 28], inplace=True)
       # rename columns
       df.columns = [col.lower().strip().replace(" ","_") for col in df.columns]
-      df.rename(columns={"article_id": "material_id", "material": "properties", "defect_description": "description", "weight": "weight_amount"}, inplace=True)
+      df.rename(columns={"article_id": "manufacturer_id", "material": "properties", "defect_description": "description", "weight": "weight_amount"}, inplace=True)
       # parse dimensions from the excel sheets
       df["properties"] = df["properties"].str.replace('*', 'x')
       df["properties"] = df["properties"].str.replace(r'(\d)x', r'\1 x ', regex=True)
@@ -123,11 +123,11 @@ class InputSource2(TaskOrganizer):
       df["weighing_unit"] = None
       df["reserved"] = None
       # cast material id as str
-      df["material_id"] = df["material_id"].where(df["material_id"].notna(), None)
+      df["manufacturer_id"] = df["manufacturer_id"].where(df["manufacturer_id"].notna(), None)
       df["reserved"] = df["reserved"].where(df["reserved"].notna(), None)
       df["quantity"] = df["quantity"].where(df["quantity"].notna(), None)
       # re-order columns
-      df = df.reindex(columns=['material_id', 'material_name', 'quantity', 'quantity_unit', 'price_per_unit', 'supplier', 'length', 'breadth', 'height', 'dimension_unit', 'weight_amount', 'weighing_unit', 'properties', 'description', 'choice', 'reserved'])
+      df = df.reindex(columns=['manufacturer_id', 'material_name', 'quantity', 'quantity_unit', 'price_per_unit', 'supplier', 'length', 'breadth', 'height', 'dimension_unit', 'weight_amount', 'weighing_unit', 'properties', 'description', 'choice', 'reserved'])
       # add additional columns
       df["file_path"] = self.source.replace('\\', '/')
       df["sheet_name"] = sheet_name.strip()
