@@ -18,6 +18,7 @@ Once the above dependencies are installed clone the repository and cd into the d
 Within the repository directory, run the following command:
 
 ```bash
+docker compose up -d
 poetry shell
 poetry install
 python -m vanilla_steel --docs --serve
