@@ -13,9 +13,9 @@ You can use the following link to install the dependencies:
 - https://www.python.org/downloads/
 - https://python-poetry.org/docs/
 
-Onece the above dependencies are installed clone the repository and cd into the directory
+Once the above dependencies are installed clone the repository and cd into the directory
 
-With in the repository directory, run the following command:
+Within the repository directory, run the following command:
 
 ```bash
 poetry shell
