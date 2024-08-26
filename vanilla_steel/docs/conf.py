@@ -32,7 +32,6 @@ jar_file = os.path.basename(settings.DOCS.PLANTUML_JAR)
 local_jar_file = os.path.join("../../", settings.DOCS.CACHE_DIR, jar_file)
 plantuml = f"java -jar {os.path.abspath(local_jar_file)}"
 plantuml_output_format = "png"
-plantuml_output_dir = "./_static/diagrams"
 
 templates_path = ['_templates']
 exclude_patterns = []

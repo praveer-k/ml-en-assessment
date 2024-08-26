@@ -91,6 +91,35 @@ services:
       - pgadmin_data:/var/lib/pgadmin
     networks:
       - dbnetwork
+  
+  dashboard:
+    container_name: vanilla-steel-dashboard
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    environment:
+      DB__HOST: postgres
+    command: bash -c "poetry run python -m vanilla_steel --dashboard"
+    ports:
+      - "8501:8501"
+    networks:
+      - dbnetwork
+
+  docs:
+    container_name: vanilla-steel-docs
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    command: bash -c "poetry run python -m vanilla_steel --docs --serve"
+    ports:
+      - "8000:8000"
+    networks:
+      - dbnetwork
+
 
 volumes:
   postgres_data:

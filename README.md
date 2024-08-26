@@ -1,14 +1,15 @@
 # Vanilla Steel
 
-### Supplier Data Standardization for Metal Trading
+## Supplier Data Standardization for Metal Trading
 
+### Requirements
 
-#### Requirements
-
-In order to run the application you need to have docker, python 3.12 and poetry installed on your machine
+In order to run the application you need to have java, graphviz, docker, python 3.12 and poetry installed on your machine
 
 You can use the following link to install the dependencies:
 
+- https://www.oracle.com/java/technologies/downloads/
+- https://graphviz.org/download/
 - https://docs.docker.com/engine/install/
 - https://www.python.org/downloads/
 - https://python-poetry.org/docs/
