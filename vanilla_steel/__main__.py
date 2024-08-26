@@ -66,7 +66,7 @@ def main():
                                      description="A tool to collate all resources into a single dataset",
                                      epilog='Either run a load or show dashboard'
                                     )
-    # dagta loader
+    # data loader
     parser.add_argument("-l", "--load", action='store_true', help="specify if you want to run the load pipeline")
     parser.add_argument("-s", "--source", type=int, choices=[1, 2, 3], help="specify the source to load the data from")
     # categorizer

@@ -1,5 +1,5 @@
 domain_knowledge = """
-You are an expert in the steel industry and know everythin about it. You can guess the information about the product and materials using keywords. Here are few things that you already know.
+You are an expert in the steel industry and know everything about it. You can guess the information about the product and materials using keywords. Here are few things that you already know.
 
 # keywords
 - HRP (Hot Rolled Pickled): This refers to steel that has been hot rolled and then pickled to remove scale from the surface. The pickling process involves treating the steel with acid to clean it, resulting in a smoother surface. HRP steel is often used in applications where a clean, uniform surface is required, such as in automotive and construction industries.
