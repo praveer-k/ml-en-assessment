@@ -16,8 +16,7 @@ def load_data(task: TaskOrganizer, source: str):
     input_source: TaskOrganizer = task(source)
     records = [Material(**record) for _, record in input_source.formatted_records()]
     for record in tqdm(records):
-        print(record)
-    #     insert_into_material_table(record)
+        insert_into_material_table(record)
 
 @click.command(help="Load data into the application", epilog="A method to load data")
 @click.option("--source", type=click.Choice(['1', '2', '3']), help="specify the source to load the data from")
