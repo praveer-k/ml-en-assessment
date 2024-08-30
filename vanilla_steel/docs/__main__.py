@@ -1,5 +1,6 @@
 import os
 import time
+import click
 import requests
 import subprocess
 from watchdog.observers import Observer
@@ -105,3 +106,23 @@ class DocumentationBuilder(SphinxFileChangeHandler, HttpServer):
                 logger.error(f"Failed to download file: {response.status_code}")
 
 
+@click.command(help="Build, Watch or Serve Docs", epilog="A method to build, serve documentation")
+@click.option("--build", is_flag=True, help="Build Sphinx docs")
+@click.option("--watch", is_flag=True, help="Watch for changes in document source directory")
+@click.option("--serve", is_flag=True, help="Start the document server")
+def docs(build, watch, serve):
+    logger.info("show documentations")
+    SCR_DIR = os.path.abspath(settings.DOCS.SOURCE_DIR)
+    BLD_DIR = os.path.abspath(settings.DOCS.BUILD_DIR)
+    CACHE_DIR = os.path.abspath(settings.DOCS.CACHE_DIR)
+    logger.warning(f"Source dir: {SCR_DIR}")
+    logger.warning(f"Build dir: {BLD_DIR}")
+    logger.warning(f"Cache dir: {CACHE_DIR}")
+    doc = DocumentationBuilder(src_dir=SCR_DIR, build_dir=BLD_DIR, cache_dir=CACHE_DIR)
+    doc.download_dependencies()
+    if build:
+        doc.build()
+    elif watch:
+        doc.build().watch()
+    elif serve:
+        doc.build().serve()

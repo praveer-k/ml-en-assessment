@@ -36,3 +36,5 @@ class Categorizer:
         prompt = f"{filtering_instruction}\n\n{input_text}\n\nOUTPUT:"
         response = get_llm_output(prompt, format="json")
         return response 
+    
+
