@@ -6,46 +6,43 @@ from vanilla_steel.llm.categorizer import Categorizer
 from vanilla_steel.config import logger, settings
 from vanilla_steel.config.logger import LogLevel
 from vanilla_steel.docs.__main__ import DocumentationBuilder
-from pydantic.dataclasses import dataclass
-from typing import Optional, Literal
 from tqdm import tqdm
 import os
-import argparse
+import click
 import subprocess
-
-class ArgumentError(Exception):
-    def __init__(self, message):            
-        super().__init__(message)
-
-@dataclass
-class Arguments:
-    debug: Optional[bool]
-    # loader
-    load: Optional[bool]
-    source: Literal['source1', 'source2', 'source3']
-    # dashboard
-    dashboard: Optional[bool]
-    # docs
-    docs: Optional[bool]
-    build: Optional[bool]
-    serve: Optional[bool]
-    watch: Optional[bool]
-    # categorize
-    categorize: Optional[bool]
 
 def load_data(task: TaskOrganizer, source: str):
     logger.info(f"load data {source}")
     input_source: TaskOrganizer = task(source)
-    logger.info(input_source)
     records = [Material(**record) for _, record in input_source.formatted_records()]
     for record in tqdm(records):
-        insert_into_material_table(record)
+        print(record)
+    #     insert_into_material_table(record)
 
-def show_dashboard():
+@click.command(help="Load data into the application", epilog="A method to load data")
+@click.option("--source", type=click.Choice(['1', '2', '3']), help="specify the source to load the data from")
+def load(source):
+    plugin = PlugIn()
+    plugin.load("specifications.yaml")
+    factory = TaskOrganizerFactory()
+    source = f"InputSource{source}"
+    factory.register(source, plugin.object[source].module)
+    load_data(factory.funcs[source], plugin.object[source].metadata["source"])
+
+@click.command(help="Categorize data using LLM", epilog="A method to categorize data")
+def categorize():
+    Categorizer().run()
+   
+@click.command(help="Show Dashboard", epilog="A method to show dashboard")
+def dashboard():
     logger.info("show dashboard")
     subprocess.run(["streamlit", "run", "./vanilla_steel/dashboard/__main__.py"])
 
-def show_docs(args: Arguments):
+@click.command(help="Build, Watch or Serve Docs", epilog="A method to build, serve documentation")
+@click.option("--build", is_flag=True, help="Build Sphinx docs")
+@click.option("--watch", is_flag=True, help="Watch for changes in document source directory")
+@click.option("--serve", is_flag=True, help="Start the document server")
+def docs(build, watch, serve):
     logger.info("show documentations")
     SCR_DIR = os.path.abspath(settings.DOCS.SOURCE_DIR)
     BLD_DIR = os.path.abspath(settings.DOCS.BUILD_DIR)
@@ -55,68 +52,24 @@ def show_docs(args: Arguments):
     logger.warning(f"Cache dir: {CACHE_DIR}")
     doc = DocumentationBuilder(src_dir=SCR_DIR, build_dir=BLD_DIR, cache_dir=CACHE_DIR)
     doc.download_dependencies()
-    if args.build:
+    if build:
         doc.build()
-    elif args.watch:
+    elif watch:
         doc.build().watch()
-    elif args.serve:
+    elif serve:
         doc.build().serve()
 
-def main():
-    parser = argparse.ArgumentParser(prog='Vanilla Steel',
-                                     description="A tool to collate all resources into a single dataset",
-                                     epilog='Either run a load or show dashboard'
-                                    )
-    # data loader
-    parser.add_argument("-l", "--load", action='store_true', help="specify if you want to run the load pipeline")
-    parser.add_argument("-s", "--source", type=int, choices=[1, 2, 3], help="specify the source to load the data from")
-    # categorizer
-    parser.add_argument("-c", "--categorize", action='store_true', help="specify if you want to run categorizer")
-    # dashboard
-    parser.add_argument("-d", "--dashboard", action='store_true', help="specify if you want to show the dashboard")
-    # docs
-    parser.add_argument("-docs", "--docs", action='store_true', help="specify if you want to show documentation")
-    parser.add_argument("--watch", action="store_true", help="Watch for changes in document source directory")
-    parser.add_argument("--build", action="store_true", help="Build Sphinx docs")
-    parser.add_argument("--serve", action="store_true", help="Start the document server")
-    parser.add_argument("--debug", action="store_true", help="Change log level to debug", default=False)
+@click.group()
+@click.option("--debug", is_flag=True, default=False, help="Enable debug mode")
+def main(debug):
+    settings.LOG_LEVEL = LogLevel.DEBUG if debug==True else settings.LOG_LEVEL
+    logger.warning(f"Debug mode is {'on' if debug else 'off'}")
 
-    args: Arguments = parser.parse_args()
+main.add_command(load)
+main.add_command(categorize)
+main.add_command(dashboard)
+main.add_command(docs)
     
-    settings.LOG_LEVEL = LogLevel.DEBUG if args.debug==True else settings.LOG_LEVEL
-            
-    # ======================================================================
-    if args.load and args.source in [1, 2, 3]:
-        """
-            Run load data for source 1
-        """
-        plugin = PlugIn()
-        plugin.load("specifications.yaml")
-        factory = TaskOrganizerFactory()
-        source = f"InputSource{args.source}"
-        factory.register(source, plugin.object[source].module)
-        # load_data(factory.funcs[source], plugin.object[source].metadata["source"])
-
-    elif args.categorize:
-        """
-            Run categorier pipeline
-        """
-        Categorizer().run()
-            
-    elif args.dashboard:
-        """
-            Show Dashboard
-        """
-        show_dashboard()
-    elif args.docs:
-        """
-            Show Documentation
-        """
-        show_docs(args)
-    else:
-        parser.print_help()
-        raise ArgumentError("wrong combination of options selected !!!")
-
 if __name__ == "__main__":
     main()
 
