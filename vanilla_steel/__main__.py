@@ -20,7 +20,7 @@ def load_data(task: TaskOrganizer, source: str):
         for i, record in enumerate(records, 1):
             insert_into_material_table(record)
             progress.update(task, advance=1)
-            progress.update(task, description=f"[cyan]Processing {i + 1} out of {len(records)}")
+            progress.update(task, description=f"[cyan]Processing {i} out of {len(records)}")
 
 @click.command(help="Load data into the application", epilog="A method to load data")
 @click.option("--source", type=click.Choice(['1', '2', '3']), help="specify the source to load the data from")
