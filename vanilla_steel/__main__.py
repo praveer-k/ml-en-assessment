@@ -1,8 +1,6 @@
-from vanilla_steel.task_organizer.task_organizer import TaskOrganizer
-from vanilla_steel.task_organizer.input_source_1 import InputSource1
-from vanilla_steel.task_organizer.input_source_2 import InputSource2
-from vanilla_steel.task_organizer.input_source_3 import InputSource3
-from vanilla_steel.database.queries import insert_into_material_table, fetch_stats
+from vanilla_steel.core.task_organizer import TaskOrganizer, TaskOrganizerFactory
+from vanilla_steel.core.plugin import PlugIn
+from vanilla_steel.database.queries import insert_into_material_table
 from vanilla_steel.database.models import Material
 from vanilla_steel.llm.categorizer import Categorizer
 from vanilla_steel.config import logger, settings
@@ -27,6 +25,8 @@ class Arguments:
     source: Literal['source1', 'source2', 'source3']
     # dashboard
     dashboard: Optional[bool]
+    # docs
+    docs: Optional[bool]
     build: Optional[bool]
     serve: Optional[bool]
     watch: Optional[bool]
@@ -36,6 +36,7 @@ class Arguments:
 def load_data(task: TaskOrganizer, source: str):
     logger.info(f"load data {source}")
     input_source: TaskOrganizer = task(source)
+    logger.info(input_source)
     records = [Material(**record) for _, record in input_source.formatted_records()]
     for record in tqdm(records):
         insert_into_material_table(record)
@@ -84,45 +85,37 @@ def main():
     
     settings.LOG_LEVEL = LogLevel.DEBUG if args.debug==True else settings.LOG_LEVEL
             
-    match args.__dict__:
-        # ======================================================================
-        case {'load': True, 'source': 1}:
-            """
-                Run load data for source 1
-            """
-            load_data(InputSource1, './resources/source1.xlsx')
+    # ======================================================================
+    if args.load and args.source in [1, 2, 3]:
+        """
+            Run load data for source 1
+        """
+        plugin = PlugIn()
+        plugin.load("specifications.yaml")
+        factory = TaskOrganizerFactory()
+        source = f"InputSource{args.source}"
+        factory.register(source, plugin.object[source].module)
+        # load_data(factory.funcs[source], plugin.object[source].metadata["source"])
 
-        case {'load': True, 'source': 2}:
-            """
-                Run load data for source 2
-            """
-            load_data(InputSource2, './resources/source2.xlsx')
-
-        case {'load': True, 'source': 3}:
-            """
-                Run load data for source 3
-            """
-            load_data(InputSource3, './resources/source3.xlsx')
-
-        case {'categorize': True}:
-            """
-                Run categorier pipeline
-            """
-            Categorizer().run()
+    elif args.categorize:
+        """
+            Run categorier pipeline
+        """
+        Categorizer().run()
             
-        case {'dashboard': True}:
-            """
-                Show Dashboard
-            """
-            show_dashboard()
-        case {'docs': True}:
-            """
-                Show Documentation
-            """
-            show_docs(args)
-        case _:
-            parser.print_help()
-            raise ArgumentError("wrong combination of options selected !!!")
+    elif args.dashboard:
+        """
+            Show Dashboard
+        """
+        show_dashboard()
+    elif args.docs:
+        """
+            Show Documentation
+        """
+        show_docs(args)
+    else:
+        parser.print_help()
+        raise ArgumentError("wrong combination of options selected !!!")
 
 if __name__ == "__main__":
     main()

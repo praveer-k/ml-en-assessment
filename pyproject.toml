@@ -24,6 +24,7 @@ watchdog = "^4.0.2"
 streamlit = "^1.37.1"
 altair = "^5.4.0"
 pyarrow = "^17.0.0"
+pyyaml = "^6.0.2"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -36,6 +37,9 @@ watchdog = "^4.0.2"
 sphinxcontrib-plantuml = "^0.30"
 furo = "^2024.8.6"
 
+[tool.poetry.scripts]
+version = "vanilla_steel.version:show_version"
+dashboard = "vanilla_steel.dashboard.__main__:main"
 
 [build-system]
 requires = ["poetry-core"]
