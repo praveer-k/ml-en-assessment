@@ -3,3 +3,13 @@ task_scripts:
     module: "input_source_1"
     metadata:
       source: "./resources/source1.xlsx"
+  
+  - name: "InputSource2"
+    module: "input_source_2"
+    metadata:
+      source: "./resources/source2.xlsx"
+  
+  - name: "InputSource3"
+    module: "input_source_3"
+    metadata:
+      source: "./resources/source3.xlsx"
