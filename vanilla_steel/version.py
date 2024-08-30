@@ -1,4 +1,5 @@
 import json
+import click
 from urllib.parse import urlparse, ParseResult
 from urllib.request import url2pathname
 from importlib.metadata import version as pkg_version, distribution as pkg_distribution
@@ -24,5 +25,6 @@ def get_installed_requirement_string(package: str = PKG_NAME) -> str:
         package_requirement = f"{package}=={pkg_version(package)}"
     return package_requirement
 
+@click.command(name="version", help="show package version")
 def show_version():
-    print(get_installed_requirement_string("vanilla_steel"))
+    print(PKG_REQUIREMENT)
