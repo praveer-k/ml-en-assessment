@@ -1,0 +1,5 @@
+task_scripts:
+  - name: "InputSource1"
+    module: "input_source_1"
+    metadata:
+      source: "./resources/source1.xlsx"
