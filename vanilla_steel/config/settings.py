@@ -13,6 +13,9 @@ class DocSettings(BaseModel):
     CACHE_DIR: str
     PLANTUML_JAR: str
 
+    class Config:
+        frozen = True 
+
 class DBSettings(BaseModel):
     HOST: str
     PORT: int
@@ -24,12 +27,18 @@ class DBSettings(BaseModel):
     @property
     def CONNECTION_STRING(self):
         return f"postgresql+psycopg2://{self.USER}:{self.PASSWORD}@{self.HOST}:{self.PORT}/{self.NAME}"
+    
+    class Config:
+        frozen = True 
 
 class Environment(Enum):
     DEVELOPMENT = "dev"
     TESTING = "test"
     STAGING = "stage"
     PRODUCTION = "prod"
+
+    class Config:
+        frozen = True 
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(

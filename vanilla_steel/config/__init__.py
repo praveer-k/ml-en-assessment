@@ -3,7 +3,6 @@ from vanilla_steel.config.settings import Settings, Logger
 # Initialize settings
 # -----------------------------------------------------------------------
 settings = Settings(_env_file=['.env', '../../.env'], _env_file_encoding='utf-8')
-settings.DOCS.BUILD_DIR = ""
 # -----------------------------------------------------------------------
 # -----------------------------------------------------------------------
 logger = Logger.getInstance()
