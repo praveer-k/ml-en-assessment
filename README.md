@@ -22,12 +22,12 @@ Within the repository directory, run the following command:
 docker compose up -d
 poetry shell
 poetry install
-python -m vanilla_steel --docs --serve
-python -m vanilla_steel --dashboard
-python -m vanilla_steel --load --source 1
-python -m vanilla_steel --load --source 2
-python -m vanilla_steel --load --source 3
-python -m vanilla_steel --categorize
+python -m vanilla_steel docs --serve
+python -m vanilla_steel dashboard
+python -m vanilla_steel load --source 1
+python -m vanilla_steel load --source 2
+python -m vanilla_steel load --source 3
+python -m vanilla_steel categorize
 ```
 
 Following is the directory structure of the project:
