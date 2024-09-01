@@ -1,5 +1,4 @@
 import os
-import logging 
 from enum import Enum
 from pydantic import BaseModel
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -39,17 +38,14 @@ class Settings(BaseSettings):
         case_sensitive=True, 
         env_file=('../.env'), 
         env_file_encoding='utf-8',
-        extra='ignore'
+        extra='ignore',
+        frozen=True
     )
     ENVIRONMENT: Environment
     LOG_LEVEL: LogLevel
     
     DOCS: DocSettings
     DB: DBSettings
-
-    @property
-    def logger(self):
-        return Logger(stdout=True, file=False, level=logging.INFO)
     
     @property
     def PREFIX(self):
@@ -66,7 +62,8 @@ class Settings(BaseSettings):
     def __init__(self, *args, **kwargs):
         # check if environment variables `ENVIRONMENT` is set
         if "ENVIRONMENT" not in os.environ:
-            self.logger.warning("ENVIRONMENT is not set")
-            self.logger.warning("Setting ENVIRONMENT variable to `dev`")
+            logger = Logger.getInstance()
+            logger.warning("ENVIRONMENT is not set")
+            logger.warning("Setting ENVIRONMENT variable to `dev`")
             os.environ["ENVIRONMENT"] = "dev"
         super().__init__(*args, **kwargs)

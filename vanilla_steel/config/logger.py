@@ -2,6 +2,7 @@ import inspect
 import logging
 from enum import Enum
 from datetime import datetime
+from typing import Optional
 
 class LogLevel(str, Enum):
     DEBUG = "debug"
@@ -53,11 +54,20 @@ class FileNameFilter(logging.Filter):
         else:
             record.filename = __name__
         return True
-    
+
 class Logger(logging.Logger):
-    def __init__(self, stdout=True, file=True, level=logging.NOTSET):
-        super().__init__("", level)
-        self._setup_handlers(stdout, file)
+    _instance: Optional['Logger'] = None
+
+    def __new__(cls, name: str, level=logging.INFO):
+        if cls._instance is None:
+            cls._instance = super(Logger, cls).__new__(cls)
+            cls._instance.__init__(name, level)
+        return cls._instance
+
+    def __init__(self, name: str="", stdout=True, file=False, level=logging.NOTSET):
+        if not hasattr(self, '_is_initialized'):
+            super().__init__(name, level)
+            self._setup_handlers(stdout, file)
 
     def _setup_handlers(self, stdout, file):
         fmt = '%(asctime)s | %(levelname)8s| %(message)s'
@@ -80,3 +90,8 @@ class Logger(logging.Logger):
             file_handler.addFilter(file_name_filter)
             self.addHandler(file_handler)
 
+    @classmethod
+    def getInstance(cls, name: str = 'Logger', level=logging.INFO) -> 'Logger':
+        if cls._instance is None:
+            cls._instance = cls(name, level)
+        return cls._instance

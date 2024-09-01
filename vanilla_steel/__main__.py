@@ -10,7 +10,7 @@ from vanilla_steel.version import show_version
 @click.group()
 @click.option("--debug", is_flag=True, default=False, help="Enable debug mode")
 def main(debug):
-    settings.LOG_LEVEL = LogLevel.DEBUG if debug==True else settings.LOG_LEVEL
+    logger.setLevel(LogLevel.DEBUG.alias if debug==True else settings.LOG_LEVEL.name)
     logger.warning(f"Debug mode is {'on' if debug else 'off'}")
 
 if __name__ == "__main__":

@@ -2,6 +2,7 @@ import json
 import click
 from urllib.parse import urlparse, ParseResult
 from urllib.request import url2pathname
+from vanilla_steel.config import logger
 from importlib.metadata import version as pkg_version, distribution as pkg_distribution
 
 PKG_IMPORT_NAME = "vanilla_steel"
@@ -27,4 +28,4 @@ def get_installed_requirement_string(package: str = PKG_NAME) -> str:
 
 @click.command(name="version", help="show package version")
 def show_version():
-    print(PKG_REQUIREMENT)
+    logger.info(PKG_REQUIREMENT)
