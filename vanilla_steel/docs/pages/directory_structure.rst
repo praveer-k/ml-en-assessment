@@ -4,8 +4,8 @@ Following is the structure of the code base
 
 .. code-block::
 
-   vanilla_steel
-   ├── src
+   ml-en-assessment
+   ├── vanilla_steel
    │   ├── config
    │   ├── dashboard
    │   ├── database
