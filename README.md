@@ -33,8 +33,8 @@ python -m vanilla_steel categorize
 Following is the directory structure of the project:
 
 ```text
-vanilla_steel
-├── src
+ml-en-assessment
+├── vanilla_steel
 │   ├── config
 │   ├── dashboard
 │   ├── database
