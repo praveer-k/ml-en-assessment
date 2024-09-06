@@ -1,6 +1,6 @@
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, DateTime, Integer, func, ForeignKey
-from sqlalchemy.orm import composite, relationship
+from sqlalchemy.orm import composite
 from sqlalchemy import Column, Integer, String, Float, Text, Boolean
 from vanilla_steel.database.models import Dimension, Weight
 

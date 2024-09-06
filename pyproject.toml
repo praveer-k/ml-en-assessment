@@ -27,6 +27,9 @@ pyarrow = "^17.0.0"
 pyyaml = "^6.0.2"
 click = "^8.1.7"
 rich = "^13.8.0"
+torch = {version = "^2.4.1+cu124", source = "pytorch"}
+numpy = "^1.26.3"
+ipykernel = "^6.29.5"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -45,6 +48,11 @@ dashboard = "vanilla_steel.dashboard.__main__:dashboard"
 docs = "vanilla_steel.docs.__main__:docs"
 categorize = "vanilla_steel.llm.__main__:categorize"
 load = "vanilla_steel.core.__main__:load"
+
+[[tool.poetry.source]]
+name = "pytorch"
+url = "https://download.pytorch.org/whl/cu124"
+priority = 'explicit'
 
 [build-system]
 requires = ["poetry-core"]

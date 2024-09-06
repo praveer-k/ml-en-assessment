@@ -1,13 +1,5 @@
-from datetime import datetime
 # from pydantic import BaseModel
 from pydantic.dataclasses import dataclass, Field
-
-@dataclass
-class MetadataMixin:
-    id: int
-    api_version: str
-    created_at: datetime
-    updated_at: datetime
 
 @dataclass
 class Dimension:

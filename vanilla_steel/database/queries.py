@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session, sessionmaker
-from sqlalchemy import create_engine, select, distinct, func
+from sqlalchemy import create_engine, select, func
 from vanilla_steel.config import settings
 from vanilla_steel.database.base import Base, MaterialTable, MaterialPropertiesTable
 from vanilla_steel.database.models import Dimension, Weight, Material, MaterialProperties

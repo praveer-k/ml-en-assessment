@@ -34,12 +34,15 @@ Following is the directory structure of the project:
 
 ```text
 ml-en-assessment
+├── notebooks
+├── resources
+├── task_scripts
 ├── vanilla_steel
 │   ├── config
 │   ├── dashboard
 │   ├── database
 │   ├── docs
-│   ├── llm
+│   ├── modeling
 │   ├── task_organizer
 │   └── __main__.py
 ├── .env
@@ -47,7 +50,8 @@ ml-en-assessment
 ├── docker-compose.yaml
 ├── Dockerfile
 ├── pyproject.toml
-└── README.md
+├── README.md
+└── specifications.yaml
 ```
 
 Rest of the details can be found in the docs.

@@ -5,12 +5,15 @@ Following is the structure of the code base
 .. code-block::
 
    ml-en-assessment
+   ├── notebooks
+   ├── resources
+   ├── task_scripts
    ├── vanilla_steel
    │   ├── config
    │   ├── dashboard
    │   ├── database
    │   ├── docs
-   │   ├── llm
+   │   ├── modeling
    │   ├── task_organizer
    │   └── __main__.py
    ├── .env
@@ -18,7 +21,8 @@ Following is the structure of the code base
    ├── docker-compose.yaml
    ├── Dockerfile
    ├── pyproject.toml
-   └── README.md
+   ├── README.md
+   └── specifications.yaml
 
 
 `config` directory contains logging and other settings of the project and is utilised by all the 4 entrypoints of the package.

@@ -1,7 +1,7 @@
 import json
 from vanilla_steel.config import logger
-from vanilla_steel.llm.prompt import filtering_instruction, summarize_instruction
-from vanilla_steel.llm.llm import get_llm_output
+from vanilla_steel.modeling.prompt import filtering_instruction, summarize_instruction
+from vanilla_steel.modeling.llm import get_llm_output
 from vanilla_steel.database.queries import get_distinct_property_desc, insert_into_material_properties_table
 from vanilla_steel.database.models import MaterialProperties
 from rich.progress import Progress
