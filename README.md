@@ -55,3 +55,5 @@ ml-en-assessment
 ```
 
 Rest of the details can be found in the docs.
+
+In future we would use data drift measure to check the quality of the data.
